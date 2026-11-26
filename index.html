@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Korea Import Check TW</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: customs ledger — calculator with a tax waterfall, condition panels in a grid, then model ledger and stock list. */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --ink:#111a2e; --muted:#5a6478; --line:#dce1ea;
+  --accent:#1f3f9a; --accent-soft:#e4eafa; --pos:#0f7a55; --pos-soft:#dcf2e8; --neg:#b2433a; --neg-soft:#f8e3e0;
+  --car:#1f3f9a; --ship:#5a7896; --duty:#8a6d3b; --ct:#b0603c; --vat:#a0607a; --lux:#7a4bb0; --local:#4f7d6b;
+  --display:"Archivo","Noto Sans TC","Arial Narrow",Arial,sans-serif; --body:"Inter","Noto Sans TC",system-ui,-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c111c; --surface:#131a29; --ink:#e6ebf5; --muted:#97a2b8; --line:#253047;
+  --accent:#8ea6ff; --accent-soft:#1c2850; --pos:#45c495; --pos-soft:#123228; --neg:#e57d72; --neg-soft:#3a1d1a;
+  --car:#8ea6ff; --ship:#7f9cba; --duty:#c7a465; --ct:#e0916b; --vat:#d38fab; --lux:#b392e0; --local:#7fb8a1; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c111c; --surface:#131a29; --ink:#e6ebf5; --muted:#97a2b8; --line:#253047;
+  --accent:#8ea6ff; --accent-soft:#1c2850; --pos:#45c495; --pos-soft:#123228; --neg:#e57d72; --neg-soft:#3a1d1a;
+  --car:#8ea6ff; --ship:#7f9cba; --duty:#c7a465; --ct:#e0916b; --vat:#d38fab; --lux:#b392e0; --local:#7fb8a1; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.02em}
+.plate{display:inline-flex;align-items:stretch;border:2px solid var(--ink);border-radius:5px;overflow:hidden;font-family:var(--display);font-weight:700;font-size:13px;line-height:1}
+.plate .eu{background:#1f3f9a;color:#fff;padding:5px 5px 3px;font-size:10px;display:flex;align-items:flex-end}
+.plate .txt{padding:5px 8px;background:var(--surface);color:var(--ink)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--muted);font:600 13px var(--body);padding:6px 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.lang button:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hero{padding-block:36px 8px;display:grid;gap:18px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.6vw,46px);line-height:1.12;margin:0;text-wrap:balance;max-width:22ch}
+.lede{color:var(--muted);max-width:68ch;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px}
+.kpi{background:var(--surface);padding:16px 18px;min-width:0}
+.kpi .v{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.8vw,28px);line-height:1.1}
+.kpi .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+.v.pos{color:var(--pos)}.v.neg{color:var(--neg)}
+section{padding-block:34px 0}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 6px;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 16px;max-width:74ch}
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:16px}
+.inputs{display:flex;flex-wrap:wrap;gap:14px}
+.field{display:grid;gap:4px;font-size:12.5px;color:var(--muted);font-weight:600}
+.field input,.field select{font:500 15px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;width:150px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted);font-size:12.5px;background:var(--bg)}
+td.l,th.l{text-align:left}
+tr:last-child td{border-bottom:0}
+.hl{background:var(--accent-soft)}
+.gap-pos{color:var(--pos);font-weight:700}
+.gap-neg{color:var(--neg);font-weight:700}
+.wf{display:grid;gap:8px}
+.wfrow{display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px;align-items:center;font-size:12.5px;color:var(--muted)}
+.bar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:var(--bg)}
+.bar span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.filters .field select{width:150px}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.panel h3{font-family:var(--display);font-size:16px;margin:0 0 10px}
+.prow{display:grid;grid-template-columns:110px minmax(0,1fr) 104px;gap:10px;align-items:center;font-size:13px;padding:5px 0}
+.prow .lab small{display:block;color:var(--muted);font-size:11.5px}
+.track{position:relative;height:18px}
+.track .zero{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--muted);opacity:.5}
+.track .fill{position:absolute;top:0;bottom:0;border-radius:3px}
+.prow .val{text-align:right;font-weight:600}
+.share{font-size:11.5px;color:var(--muted);font-weight:500}
+.btn{font:600 13px var(--body);border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px}
+.pill.pos{background:var(--pos-soft);color:var(--pos)}
+.pill.neg{background:var(--neg-soft);color:var(--neg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.car{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px;min-width:0}
+.car .t{font-weight:600}
+.car .m{font-size:12.5px;color:var(--muted)}
+.car .nums{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:13px}
+.car .nums span:nth-child(even){text-align:right}
+.car a{color:var(--accent);font-weight:600;font-size:13px;text-decoration:none}
+.car a:hover{text-decoration:underline}
+.car .links{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:8px}
+.car .kgl{display:grid;gap:6px;font-size:12.5px;color:var(--muted)}
+.car .kgl .chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.car .kgl a{display:flex;align-items:center;justify-content:center;gap:4px;height:30px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;white-space:nowrap}
+.car .kgl a:hover{border-color:var(--accent);text-decoration:none}
+.notes{font-size:13px;color:var(--muted);display:grid;gap:8px;max-width:82ch}
+.notes b{color:var(--ink)}
+.empty{color:var(--muted);padding:16px}
+.muted{color:var(--muted)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:minmax(0,1fr)}.filters{position:static}.wfrow{grid-template-columns:90px minmax(0,1fr)}}
+@media (prefers-reduced-motion:no-preference){.track .fill,.bar span{transition:width .35s ease,left .35s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="plate"><span class="eu">TW</span><span class="txt">KR → TW</span></span> Mangocar</div>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="lang-zh" type="button" aria-pressed="true">中文</button>
+      <button id="lang-en" type="button" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <h1 data-i="h1"></h1>
+    <p class="lede" data-i="lede"></p>
+    <div class="kpis" id="kpis"></div>
+  </div>
+
+  <section id="calc">
+    <h2 data-i="calcH"></h2>
+    <p class="sub" data-i="calcSub"></p>
+    <div class="calc">
+      <div class="inputs">
+        <label class="field"><span data-i="inUsd"></span><input id="in-usd" type="number" min="0" step="100" value="25000"></label>
+        <label class="field"><span data-i="inCc"></span><input id="in-cc" type="number" min="0" step="100" value="1991"></label>
+        <label class="field"><span data-i="inFuel"></span><select id="in-fuel"></select></label>
+        <label class="field"><span data-i="inTw"></span><input id="in-tw" type="number" min="0" step="1" value="160"></label>
+      </div>
+      <div class="tblwrap"><table id="calc-table"></table></div>
+      <div class="wf" id="wf"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section id="conditions">
+    <h2 data-i="condH"></h2>
+    <p class="sub" data-i="condSub"></p>
+    <div class="filters">
+      <label class="field"><span data-i="fMake"></span><select id="f-make"></select></label>
+      <label class="field"><span data-i="fFuel"></span><select id="f-fuel"></select></label>
+      <label class="field"><span data-i="fYear"></span><select id="f-year"></select></label>
+      <label class="field"><span data-i="fKm"></span><select id="f-km"></select></label>
+      <label class="field"><span data-i="fBudget"></span><select id="f-budget"></select></label>
+    </div>
+    <div class="panels" id="panels"></div>
+  </section>
+
+  <section id="models">
+    <h2 data-i="modH"></h2>
+    <p class="sub" data-i="modSub"></p>
+    <div class="tblwrap"><table id="model-table"></table></div>
+    <div style="margin-top:10px"><button class="btn" id="more" type="button"></button></div>
+  </section>
+
+  <section id="stock">
+    <h2 data-i="stockH"></h2>
+    <p class="sub" data-i="stockSub"></p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section id="method">
+    <h2 data-i="methH"></h2>
+    <div class="notes" id="notes"></div>
+  </section>
+</div>
+
+<script>
+const T={
+ zh:{eyebrow:"韓國進口 · 資料日期 ",h1:"從韓國進口中古車到台灣，能多賺多少？",
+  lede:"我們把 Mangocar 庫存的每一台車，與 8891 上的同款車比對：同車型、同年份、同燃料、同排氣量、相近里程。運費、關稅、貨物稅、營業稅、奢侈稅、驗車與領牌費用都已計入。",
+  k1:"台車已比對",k2:"計入所有成本後低於台灣行情",k3:"這些車的利潤中位數",k4:"前 25% 的利潤（起）",
+  calcH:"計算方式",calcSub:"韓國車價加上運費與保險，課徵進口稅 17.5%、貨物稅、營業稅 5%、推廣貿易服務費與奢侈稅（如適用），再加上驗車（ARTC／VSCC）與報關、領牌費用，即為到台總成本。與 8891 行情的差額就是您的利潤。可輸入自己的數字試算。",
+  inUsd:"韓國車價（USD）",inCc:"排氣量（cc）",inFuel:"燃料",inTw:"台灣行情（萬元）",
+  cUsd:"韓國車價",cShip:"運費＋保險",cDuty:"進口稅",cCt:"貨物稅",cVat:"營業稅＋推貿費",cLux:"奢侈稅",cLocal:"驗車＋報關領牌",cFinal:"到台總成本",cTw:"台灣行情",cGap:"利潤",
+  wfK:"成本",wfD:"台灣行情",lg:["韓國車價","運費＋保險","進口稅","貨物稅","營業稅＋推貿費","奢侈稅","驗車＋報關領牌","利潤"],
+  ctRule:{low:"貨物稅 25%（2,000cc 以下）",high:"貨物稅 30%（2,001cc 以上）",ev:"電動車：完稅價格 140 萬元以內免徵貨物稅（至 2030 年底）"},luxOn:"已達奢侈稅門檻，加徵 10%",
+  condH:"依車況看利潤",condSub:"各組每台車的利潤中位數。比例表示該組中計入所有成本後低於台灣行情的車輛占比。",
+  fMake:"品牌",fFuel:"燃料",fYear:"年份起",fKm:"里程至",fBudget:"總成本至",all:"全部",
+  pAge:"年份",pKm:"里程（km）",pPrice:"每台到台總成本",pFuel:"燃料",pCc:"排氣量",cars:"台",ofCars:"獲利",
+  modH:"利潤最高的車型",modSub:"庫存至少三台的車型、年份與燃料組合，依利潤中位數排序。套用上方篩選。",
+  mModel:"車型",mYear:"年份",mFuel:"燃料",mN:"台數",mFinal:"總成本（中位數）",mTw:"台灣行情（中位數）",mGap:"利潤（中位數）",mShare:"獲利比例",more:"顯示更多",less:"顯示較少",
+  stockH:"利潤最高的庫存車",stockSub:"Mangocar 庫存中的個別車輛。第一個連結開啟 Mangocar 車輛頁（含照片與檢測報告），下方數字開啟用來計算台灣行情的 8891 同款車。",
+  sFinal:"到台總成本",sTw:"台灣行情",sGap:"利潤",sComps:"筆比對車源",open:"Mangocar 車輛頁",twLinks:"8891 同款車：",
+  none:"此條件下沒有車輛。",noPos:"此條件下沒有計入所有成本後仍低於行情的車輛。",
+  methH:"方法與假設",
+  fuels:{Petrol:"汽油",Diesel:"柴油",Hybrid:"油電",Electric:"電動"},
+  notes:d=>[
+   `<b>資料來源。</b>Mangocar 庫存（2026-11-24）與 8891 中古車刊登（2026-11-23 收集，共 ${fmtN(d.twListings)} 筆有效車源）。共比對 ${fmtN(d.cars.length)} 台。`,
+   `<b>台灣行情。</b>8891 同車型、同年份、同燃料、排氣量 ±150cc、里程相近（±30%；2 萬公里以下為 4 萬公里以內）的刊登價中位數。至少四筆，已去除極端值。配備等級可能不同。台灣行情與總成本相差 75% 以上者視為等級不符，不列入。`,
+   `<b>運輸。</b>韓國端費用（內陸運輸、出口報關、註銷）US$${fmtN(d.cost.krSide)}、海運（RoRo）US$${fmtN(d.cost.sea)}、保險為車價 ${pctS(d.cost.ins)}。韓台航線未查到公開報價，此為估計值。`,
+   `<b>稅費（財政部關務署公式）。</b>完稅價格 = 車價 + 運費 + 保險。進口稅 17.5%；貨物稅 =（完稅價格 + 進口稅）× 25%（2,000cc 以下）或 30%（2,001cc 以上）；營業稅 5%（以完稅價格 + 進口稅 + 貨物稅為基礎）；推廣貿易服務費 0.04%。完稅價格達 NT$${fmtN(d.cost.luxLow)}（2,000cc 以下）或 NT$${fmtN(d.cost.luxHigh)}（2,001cc 以上）時加徵 10% 奢侈稅。電動車以完稅價格 140 萬元計算之貨物稅額內免徵（至 2030 年底）。中古車與新車稅率相同，但海關可能以新車價格折舊核估完稅價格，而非發票價格。`,
+   `<b>驗車與領牌。</b>進口中古車須逐車通過 ARTC／VSCC 安審、排氣、油耗與噪音測試。取得同車型安審授權報告時約 7–12 萬元，無授權報告可達 40 萬元以上；本頁以 NT$${fmtN(d.cost.insp)} 計算。報關、港口、內陸運輸與領牌另計 US$${fmtN(d.cost.local)}（估計值）。`,
+   `<b>匯率與其他。</b>US$1 = NT$${d.cost.twd}。未包含：銷售費用、整備、資金成本、匯率變動及 2,000cc 以下汰舊換新貨物稅減徵。營業稅可作為進項稅額扣抵，本頁仍計入成本。`,
+   `<b>注意。</b>所有數字均為依公開刊登資訊所做的估算，並非售價保證。`]},
+ en:{eyebrow:"Import from Korea · Data as of ",h1:"How much more does a used car from Korea earn in Taiwan?",
+  lede:"We compared every car in Mangocar's stock with similar listings on 8891: same model, same year, same fuel, same engine size and similar mileage. Shipping, import duty, commodity tax, business tax, luxury tax, inspection and registration are included.",
+  k1:"cars compared",k2:"cost less than the Taiwan market price after all costs",k3:"median extra margin of those cars",k4:"extra margin in the top quarter (from)",
+  calcH:"How we calculate",calcSub:"Price in Korea plus shipping and insurance, then 17.5% import duty, commodity tax, 5% business tax, the trade promotion fee and luxury tax where it applies, plus vehicle testing (ARTC/VSCC), customs clearance and registration gives the total cost. The difference to the 8891 market price is your extra margin. Try your own figures.",
+  inUsd:"Price in Korea (USD)",inCc:"Engine size (cc)",inFuel:"Fuel",inTw:"Taiwan price (NT$ 10k)",
+  cUsd:"Price Korea",cShip:"Shipping + insurance",cDuty:"Import duty",cCt:"Commodity tax",cVat:"Business tax + fee",cLux:"Luxury tax",cLocal:"Testing + clearance",cFinal:"Total cost",cTw:"Taiwan price",cGap:"Extra margin",
+  wfK:"Cost",wfD:"Taiwan price",lg:["Car in Korea","Shipping + insurance","Import duty","Commodity tax","Business tax + fee","Luxury tax","Testing + clearance","Extra margin"],
+  ctRule:{low:"Commodity tax 25% (2,000 cc and under)",high:"Commodity tax 30% (2,001 cc and over)",ev:"Electric: commodity tax exempt up to a dutiable value of NT$1.4 million (until end of 2030)"},luxOn:"Above the luxury tax threshold: extra 10%",
+  condH:"Extra margin by vehicle condition",condSub:"Median extra margin per car in each group. The share shows how many cars in the group cost less than the Taiwan market price after all costs.",
+  fMake:"Make",fFuel:"Fuel",fYear:"Year from",fKm:"Mileage up to",fBudget:"Total cost up to",all:"All",
+  pAge:"Model year",pKm:"Mileage (km)",pPrice:"Total cost per car",pFuel:"Fuel",pCc:"Engine size",cars:"cars",ofCars:"positive",
+  modH:"Models with the highest extra margin",modSub:"Model, year and fuel with at least three cars in stock, sorted by median extra margin. The filters above apply.",
+  mModel:"Model",mYear:"Year",mFuel:"Fuel",mN:"Cars",mFinal:"Total cost (median)",mTw:"Taiwan price (median)",mGap:"Extra margin (median)",mShare:"Share positive",more:"Show more",less:"Show less",
+  stockH:"Cars in stock with the highest extra margin",stockSub:"Individual cars from Mangocar's stock. The first link opens the Mangocar listing with photos and inspection report; the numbers below open comparable 8891 listings used for the Taiwan price.",
+  sFinal:"Total cost",sTw:"Taiwan price",sGap:"Extra margin",sComps:"comparable listings",open:"Listing on Mangocar",twLinks:"Comparable on 8891:",
+  none:"No cars match this selection.",noPos:"No cars in this selection cost less than the market after all costs.",
+  methH:"Method and assumptions",
+  fuels:{Petrol:"Petrol",Diesel:"Diesel",Hybrid:"Hybrid",Electric:"Electric"},
+  notes:d=>[
+   `<b>Data sources.</b> Mangocar stock (2026-11-24) and 8891 used-car listings (collected 2026-11-23, ${fmtN(d.twListings)} usable listings). ${fmtN(d.cars.length)} cars were compared.`,
+   `<b>Taiwan market price.</b> Median asking price on 8891 for the same model, year, fuel and engine size (±150 cc) with similar mileage (±30%; below 20,000 km up to 40,000 km). At least four listings; outliers removed. Trim can differ. Cars whose Taiwan price is more than 75% above or below the total cost are left out as a likely trim mismatch.`,
+   `<b>Shipping.</b> Korea-side costs (inland transport, export clearance, deregistration) US$${fmtN(d.cost.krSide)}, RoRo sea freight US$${fmtN(d.cost.sea)}, insurance ${pctS(d.cost.ins)} of the car price. No public Korea–Taiwan quote was found, so these are estimates.`,
+   `<b>Taxes (Customs Administration formula).</b> Dutiable value = car price + freight + insurance. Import duty 17.5%; commodity tax = (dutiable value + duty) × 25% (2,000 cc and under) or 30% (2,001 cc and over); business tax 5% of (dutiable value + duty + commodity tax); trade promotion fee 0.04%. Luxury tax of 10% applies when the dutiable value reaches NT$${fmtN(d.cost.luxLow)} (2,000 cc and under) or NT$${fmtN(d.cost.luxHigh)} (over 2,000 cc). Electric cars are exempt from commodity tax up to a dutiable value of NT$1.4 million (until end of 2030). Used cars pay the same rates as new cars, but customs may value them from the new-car price less depreciation instead of the invoice.`,
+   `<b>Testing and registration.</b> Each imported used car must pass ARTC/VSCC safety, emissions, fuel-economy and noise tests: about NT$70,000–120,000 with a safety approval report for the same model, NT$400,000+ without one. This page uses NT$${fmtN(d.cost.insp)}. Customs broker, port, inland transport and registration add US$${fmtN(d.cost.local)} (estimate).`,
+   `<b>Exchange rate and exclusions.</b> US$1 = NT$${d.cost.twd}. Not included: selling costs, reconditioning, financing, exchange-rate moves and the trade-in commodity tax reduction for cars of 2,000 cc and under. Business tax is recoverable as input tax but is kept in the cost here.`,
+   `<b>Note.</b> All figures are estimates based on public listings and are not a promise of a sale price.`]}
+};
+const FUELS=["Petrol","Diesel","Hybrid","Electric"];
+const DEF={twd:32.7,krSide:700,sea:800,ins:.015,duty:.175,bt:.05,fee:.0004,lux:.1,luxLow:1945289,luxHigh:1870470,evBase:1400000,insp:100000,local:800};
+let L='zh',D=null,showAll=false;
+try{const s=localStorage.getItem('kr-tw-lang');if(s==='en'||s==='zh')L=s}catch(e){}
+const loc=()=>L==='zh'?'zh-TW':'en-GB';
+const C=()=>D?D.cost:DEF;
+function fmtN(n){return Math.round(n).toLocaleString(loc())}
+function nt(usd){return Math.round(usd*C().twd/1000)*1000}
+function fmtT(usd){const v=nt(usd);return (v<0?'−':'')+'NT$'+Math.abs(v).toLocaleString(loc())}
+function fmtSigned(usd){const v=nt(usd);return (v>0?'+':v<0?'−':'')+'NT$'+Math.abs(v).toLocaleString(loc())}
+function fmtU(n){return 'US$'+Math.round(n).toLocaleString(loc())}
+function pct(x){return Math.round(x*100)+'%'}
+function pctS(x){return (Math.round(x*1000)/10)+'%'}
+function med(a){if(!a.length)return NaN;const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2}
+function q(a,p){if(!a.length)return NaN;const s=[...a].sort((x,y)=>x-y),pos=(s.length-1)*p,lo=Math.floor(pos),hi=Math.ceil(pos);return s[lo]+(s[hi]-s[lo])*(pos-lo)}
+function cost(usd,fuel,cc,c){
+  const ship=c.krSide+c.sea+usd*c.ins,cif=usd+ship,duty=cif*c.duty;
+  const ev=fuel==='Electric',ctRate=ev?.25:(cc>2000?.30:.25);
+  const ct=ev?Math.max(0,(cif+duty)*.25-c.evBase/c.twd*.25):(cif+duty)*ctRate;
+  const bt=(cif+duty+ct)*c.bt,fee=cif*c.fee,th=(!ev&&cc>2000)?c.luxHigh:c.luxLow;
+  const lux=cif*c.twd>=th?(cif+duty+ct+bt)*c.lux:0,local=c.insp/c.twd+c.local;
+  return {usd,ship,duty,ct,vat:bt+fee,lux,local,final:cif+duty+ct+bt+fee+lux+local,rule:ev?'ev':(cc>2000?'high':'low')};
+}
+const $=id=>document.getElementById(id);
+
+function applyText(){
+  const t=T[L];document.documentElement.lang=L==='zh'?'zh-Hant':'en';
+  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.dataset.i;if(typeof t[k]==='string')el.textContent=t[k]});
+  document.querySelector('[data-i="eyebrow"]').textContent=t.eyebrow+(D?'2026-11-24':'');
+  $('lang-zh').setAttribute('aria-pressed',L==='zh');$('lang-en').setAttribute('aria-pressed',L==='en');
+}
+function fillCalcSelects(){const t=T[L],fv=$('in-fuel').value||'Petrol';$('in-fuel').innerHTML=FUELS.map(f=>`<option value="${f}">${t.fuels[f]}</option>`).join('');$('in-fuel').value=fv}
+function renderCalc(){
+  const t=T[L],c=C();
+  const usd=+$('in-usd').value||0,cc=+$('in-cc').value||0,f=$('in-fuel').value,tw=(+$('in-tw').value||0)*10000/c.twd;
+  const k=cost(usd,f,cc,c),gap=tw-k.final;
+  $('calc-table').innerHTML=`<thead><tr><th>${t.cUsd}</th><th>${t.cShip}</th><th>${t.cDuty}</th><th>${t.cCt}</th><th>${t.cVat}</th><th>${t.cLux}</th><th>${t.cLocal}</th><th class="hl">${t.cFinal}</th><th>${t.cTw}</th><th class="hl">${t.cGap}</th></tr></thead>
+   <tbody><tr><td>${fmtT(usd)}<div class="muted" style="font-size:11.5px">${fmtU(usd)}</div></td><td>${fmtT(k.ship)}</td><td>${fmtT(k.duty)}</td><td>${fmtT(k.ct)}</td><td>${fmtT(k.vat)}</td><td>${fmtT(k.lux)}</td><td>${fmtT(k.local)}</td><td class="hl"><b>${fmtT(k.final)}</b></td><td>${fmtT(tw)}</td><td class="hl ${gap>=0?'gap-pos':'gap-neg'}">${fmtSigned(gap)}</td></tr>
+   <tr><td class="l muted" colspan="10" style="white-space:normal;font-size:12.5px">${t.ctRule[k.rule]}${k.lux>0?' · '+t.luxOn:''}</td></tr></tbody>`;
+  const max=Math.max(k.final,tw,1),w=v=>(Math.max(0,v)/max*100).toFixed(2)+'%';
+  const parts=[[k.usd,'--car'],[k.ship,'--ship'],[k.duty,'--duty'],[k.ct,'--ct'],[k.vat,'--vat'],[k.lux,'--lux'],[k.local,'--local']];
+  $('wf').innerHTML=`<div class="wfrow"><span>${t.wfK}</span><div class="bar">${parts.map(([v,cv])=>`<span style="width:${w(v)};background:var(${cv})"></span>`).join('')}</div></div>
+   <div class="wfrow"><span>${t.wfD}</span><div class="bar"><span style="width:${w(Math.min(tw,k.final))};background:var(--line)"></span><span style="width:${w(gap)};background:var(--pos)"></span></div></div>`;
+  $('legend').innerHTML=['--car','--ship','--duty','--ct','--vat','--lux','--local','--pos'].map((cv,i)=>`<span><i style="background:var(${cv})"></i>${t.lg[i]}</span>`).join('');
+}
+function enrich(){D.rows=D.cars.map(r=>{const k=cost(r[5],D.fuels[r[3]],r[9],D.cost);return {mk:r[0],mo:r[1],y:r[2],f:r[3],km:r[4]*1000,usd:r[5],tw:r[6],n:r[7],code:r[8],cc:r[9],links:r[10]||[],final:k.final,gap:r[6]-k.final}})}
+function fillFilters(){
+  const t=T[L],keep=id=>$(id).value;
+  const mv=keep('f-make'),fv=keep('f-fuel'),yv=keep('f-year'),kv=keep('f-km'),bv=keep('f-budget');
+  const cnt={};D.rows.forEach(r=>cnt[r.mk]=(cnt[r.mk]||0)+1);
+  const mk=D.makes.map((m,i)=>[i,m,cnt[i]||0]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]);
+  $('f-make').innerHTML=`<option value="">${t.all}</option>`+mk.map(([i,m,n])=>`<option value="${i}">${m} (${fmtN(n)})</option>`).join('');
+  $('f-fuel').innerHTML=`<option value="">${t.all}</option>`+D.fuels.map((f,i)=>`<option value="${i}">${t.fuels[f]}</option>`).join('');
+  $('f-year').innerHTML=`<option value="">${t.all}</option>`+[2014,2016,2018,2020,2022,2024].map(y=>`<option value="${y}">${y}</option>`).join('');
+  $('f-km').innerHTML=`<option value="">${t.all}</option>`+[30000,60000,100000,150000].map(k=>`<option value="${k}">${fmtN(k)} km</option>`).join('');
+  $('f-budget').innerHTML=`<option value="">${t.all}</option>`+[500000,1000000,1500000,2000000,3000000].map(b=>`<option value="${b}">NT$${fmtN(b)}</option>`).join('');
+  $('f-make').value=mv;$('f-fuel').value=fv;$('f-year').value=yv;$('f-km').value=kv;$('f-budget').value=bv;
+}
+function filtered(){
+  const m=$('f-make').value,f=$('f-fuel').value,y=+$('f-year').value||0,k=+$('f-km').value||Infinity,b=+$('f-budget').value||Infinity;
+  return D.rows.filter(r=>(m===''||r.mk==m)&&(f===''||r.f==f)&&r.y>=y&&r.km<=k&&r.final*D.cost.twd<=b);
+}
+function renderKpis(rows){
+  const t=T[L],pos=rows.filter(r=>r.gap>0),g=pos.map(r=>r.gap);
+  $('kpis').innerHTML=[[fmtN(rows.length),t.k1,''],[rows.length?pct(pos.length/rows.length):'–',t.k2,''],[g.length?fmtSigned(med(g)):'–',t.k3,'pos'],[g.length?fmtSigned(q(g,.75)):'–',t.k4,'pos']]
+   .map(([v,l,c])=>`<div class="kpi"><div class="v ${c}">${v}</div><div class="l">${l}</div></div>`).join('');
+}
+function panel(title,groups){
+  const t=T[L],vals=groups.filter(g=>g.rows.length).map(g=>med(g.rows.map(r=>r.gap)));
+  const mx=Math.max(1,...vals.map(Math.abs)),hasNeg=vals.some(v=>v<0),hasPos=vals.some(v=>v>0),zero=hasNeg&&hasPos?50:hasNeg?100:0,scale=hasNeg&&hasPos?50:100;
+  return `<div class="panel"><h3>${title}</h3>`+groups.map(g=>{
+    const n=g.rows.length;if(!n)return `<div class="prow"><span class="lab">${g.label}</span><span class="muted" style="font-size:12px">–</span><span></span></div>`;
+    const v=med(g.rows.map(r=>r.gap)),share=g.rows.filter(r=>r.gap>0).length/n,w=Math.abs(v)/mx*scale,left=v>=0?zero:zero-w;
+    return `<div class="prow"><span class="lab">${g.label}<small>${fmtN(n)} ${t.cars}</small></span><div class="track">${hasNeg?`<span class="zero" style="left:${zero}%"></span>`:''}<span class="fill" style="left:${left}%;width:${w}%;background:${v>=0?'var(--pos)':'var(--neg)'}"></span></div><span class="val ${v>=0?'gap-pos':'gap-neg'}">${fmtSigned(v)}<div class="share">${pct(share)} ${t.ofCars}</div></span></div>`}).join('')+`</div>`;
+}
+function renderPanels(rows){
+  const t=T[L],by=(fn,defs)=>defs.map(([label,test])=>({label,rows:rows.filter(r=>test(fn(r)))})),tw=D.cost.twd;
+  const age=by(r=>r.y,[['2025–2026',y=>y>=2025],['2022–2024',y=>y>=2022&&y<=2024],['2019–2021',y=>y>=2019&&y<=2021],['2016–2018',y=>y>=2016&&y<=2018],['2012–2015',y=>y<=2015]]);
+  const km=by(r=>r.km,[['< 30,000',k=>k<30000],['30–60,000',k=>k>=30000&&k<60000],['60–100,000',k=>k>=60000&&k<100000],['100–150,000',k=>k>=100000&&k<150000],['≥ 150,000',k=>k>=150000]]);
+  const W=L==='zh'?['< 60萬','60–100萬','100–150萬','150–250萬','≥ 250萬']:['< NT$0.6M','NT$0.6–1M','NT$1–1.5M','NT$1.5–2.5M','≥ NT$2.5M'];
+  const pr=by(r=>r.final*tw,[[W[0],v=>v<600000],[W[1],v=>v>=600000&&v<1000000],[W[2],v=>v>=1000000&&v<1500000],[W[3],v=>v>=1500000&&v<2500000],[W[4],v=>v>=2500000]]);
+  const ev=r=>D.fuels[r.f]==='Electric';
+  const cc=by(r=>r,[[t.fuels.Electric,r=>ev(r)],['≤ 1.6 L',r=>!ev(r)&&r.cc<=1650],['1.7–2.0 L (25%)',r=>!ev(r)&&r.cc>1650&&r.cc<=2000],['2.0–3.0 L (30%)',r=>!ev(r)&&r.cc>2000&&r.cc<=3050],['> 3.0 L (30%)',r=>!ev(r)&&r.cc>3050]]);
+  const fu=D.fuels.map((f,i)=>({label:t.fuels[f],rows:rows.filter(r=>r.f===i)}));
+  $('panels').innerHTML=panel(t.pAge,age)+panel(t.pKm,km)+panel(t.pCc,cc)+panel(t.pFuel,fu)+panel(t.pPrice,pr);
+}
+function renderModels(rows){
+  const t=T[L],g={};rows.forEach(r=>{const k=r.mo+'|'+r.y+'|'+r.f;(g[k]=g[k]||[]).push(r)});
+  let list=Object.values(g).filter(a=>a.length>=3).map(a=>({mk:a[0].mk,mo:a[0].mo,y:a[0].y,f:a[0].f,n:a.length,fin:med(a.map(r=>r.final)),tw:med(a.map(r=>r.tw)),gap:med(a.map(r=>r.gap)),share:a.filter(r=>r.gap>0).length/a.length}));
+  list.sort((a,b)=>b.gap-a.gap);const shown=showAll?list.slice(0,100):list.slice(0,15);
+  $('model-table').innerHTML=`<thead><tr><th class="l">${t.mModel}</th><th>${t.mYear}</th><th class="l">${t.mFuel}</th><th>${t.mN}</th><th>${t.mFinal}</th><th>${t.mTw}</th><th>${t.mGap}</th><th>${t.mShare}</th></tr></thead><tbody>`+
+   (shown.length?shown.map(x=>`<tr><td class="l">${D.makes[x.mk]} ${D.models[x.mo]}</td><td>${x.y}</td><td class="l">${t.fuels[D.fuels[x.f]]}</td><td>${x.n}</td><td>${fmtT(x.fin)}</td><td>${fmtT(x.tw)}</td><td class="${x.gap>=0?'gap-pos':'gap-neg'}">${fmtSigned(x.gap)}</td><td><span class="pill ${x.share>=.5?'pos':'neg'}">${pct(x.share)}</span></td></tr>`).join(''):`<tr><td class="l empty" colspan="8">${t.none}</td></tr>`)+`</tbody>`;
+  $('more').hidden=list.length<=15;$('more').textContent=showAll?t.less:t.more;
+}
+function renderCards(rows){
+  const t=T[L],top=[...rows].filter(r=>r.gap>0).sort((a,b)=>b.gap-a.gap).slice(0,24),ml=L==='zh'?'zh-TW':'en';
+  $('cards').innerHTML=top.length?top.map(r=>`<div class="car"><div><div class="t">${D.makes[r.mk]} ${D.models[r.mo]}</div><div class="m">${r.y} · ${t.fuels[D.fuels[r.f]]}${D.fuels[r.f]!=='Electric'?' · '+fmtN(r.cc)+' cc':''} · ${fmtN(r.km)} km</div></div>
+   <div class="nums"><span>${t.sFinal}</span><span>${fmtT(r.final)}</span><span>${t.sTw}</span><span>${fmtT(r.tw)}</span><span>${t.sGap}</span><span class="gap-pos">${fmtSigned(r.gap)}</span></div>
+   <div class="m">${r.n} ${t.sComps} · ${fmtU(r.usd)} Korea</div>
+   <div class="links"><a href="https://mangoworldcar.com/${ml}/car-detail/${r.code}" target="_blank" rel="noopener">${t.open} →</a>
+   ${r.links.length?`<div class="kgl"><span>${t.twLinks}</span><span class="chips">${r.links.map((id,i)=>`<a href="https://auto.8891.com.tw/usedauto-infos-${id}.html" target="_blank" rel="noopener" aria-label="${t.twLinks} ${i+1}">${i+1} ↗</a>`).join('')}</span></div>`:''}</div></div>`).join(''):`<div class="empty">${t.noPos}</div>`;
+}
+function renderNotes(){$('notes').innerHTML=T[L].notes(D).map(s=>`<p style="margin:0">${s}</p>`).join('')}
+function renderAll(){applyText();renderCalc();if(!D)return;const rows=filtered();renderKpis(rows);renderPanels(rows);renderModels(rows);renderCards(rows);renderNotes()}
+function setLang(l){L=l;try{localStorage.setItem('kr-tw-lang',l)}catch(e){}fillCalcSelects();if(D)fillFilters();renderAll()}
+$('lang-zh').onclick=()=>setLang('zh');$('lang-en').onclick=()=>setLang('en');
+['in-usd','in-cc','in-tw'].forEach(id=>$(id).addEventListener('input',renderCalc));
+$('in-fuel').addEventListener('change',renderCalc);
+['f-make','f-fuel','f-year','f-km','f-budget'].forEach(id=>$(id).addEventListener('change',()=>{showAll=false;renderAll()}));
+$('more').onclick=()=>{showAll=!showAll;renderModels(filtered())};
+fillCalcSelects();applyText();renderCalc();
+fetch('data.json?v=20261126a').then(r=>r.json()).then(d=>{D=d;enrich();fillFilters();renderAll()}).catch(()=>{$('kpis').innerHTML='<div class="kpi"><div class="l">Data could not be loaded.</div></div>'});
+</script>
+</body>
+</html>
